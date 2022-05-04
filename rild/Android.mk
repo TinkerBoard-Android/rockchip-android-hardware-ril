@@ -29,11 +29,13 @@ endif
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE:= rild
-ifeq ($(PRODUCT_COMPATIBLE_PROPERTY),true)
-LOCAL_INIT_RC := rild.rc
-LOCAL_CFLAGS += -DPRODUCT_COMPATIBLE_PROPERTY
-else
-LOCAL_INIT_RC := rild.legacy.rc
+ifneq ($(BOARD_HAS_4G_MODEM),true)
+    ifeq ($(PRODUCT_COMPATIBLE_PROPERTY),true)
+        LOCAL_INIT_RC := rild.rc
+        LOCAL_CFLAGS += -DPRODUCT_COMPATIBLE_PROPERTY
+    else
+        LOCAL_INIT_RC := rild.legacy.rc
+    endif
 endif
 
 include $(BUILD_EXECUTABLE)
